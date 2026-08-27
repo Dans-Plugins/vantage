@@ -46,7 +46,9 @@ CORS. See the [Configuration Guide](../CONFIG.md) for the backend side of this c
   under `pages/api/auth/`.
 - `components/<Name>/` – One directory per React component, containing `<Name>.tsx`, an `index.ts`
   barrel export, and an optional `<Name>.module.css`.
-- `hooks/` – SWR-based data-fetching hooks, one `use<Thing>.ts` per backend resource.
+- `hooks/` – Data-access hooks, one `use<Thing>.ts` per operation: reads use `useSWR`
+  (`useUsers`, `useFiles`, `useServer`, …) and writes use `useSWRMutation` (`useUserCreate`,
+  `useFileUpload`, `useFileDelete`, …).
 - `src/` – Shared utilities, including `fetchWithToken` and `mutateWithToken`.
 - `types/` – Shared TypeScript type definitions.
 - `styles/` – Global CSS.
