@@ -12,13 +12,17 @@ making any changes.
 - Frontend framework: Next.js (React)
 - Database: PostgreSQL with jOOQ and Flyway migrations
 - Authentication: JWT (jjwt) on the backend, NextAuth.js on the frontend
-- Test framework: JUnit 5
+- Test framework: none configured yet — there is no test source set and no test framework
+  dependency in `backend/build.gradle`. JUnit 5 is the intended framework (`test` is already
+  configured with `useJUnitPlatform()`), but adding the first test also means adding the dependency.
+  See the Testing section of `README.md`.
 
 ## Project Structure
 
 - `backend/src/main/kotlin/` – Backend source code (Kotlin)
 - `backend/src/main/resources/` – Database migration files
-- `backend/src/test/java/` – Backend unit tests
+- `backend/src/test/kotlin/` – Backend unit tests (does not exist yet; new tests belong here,
+  mirroring the main package structure)
 - `frontend/pages/` – Next.js pages and API routes
 - `frontend/components/` – React components
 - `frontend/hooks/` – Custom React hooks

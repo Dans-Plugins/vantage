@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Corrected the testing documentation in `README.md`, `CONTRIBUTING.md`, and
+  `.github/copilot-instructions.md`: the backend has no test suite or test framework dependency yet,
+  so `./gradlew clean test` reports `NO-SOURCE` rather than passing tests.
+- Documented `./gradlew clean build` as the automated check that CI actually runs, and noted that
+  the frontend has no test tooling or CI coverage.
+- Replaced the `create-next-app` boilerplate in `frontend/README.md` with documentation of the
+  frontend's actual setup, scripts, environment variables, and project structure.
+
 ## [2.0.1] – 2023-01-01
 
 ### Added
