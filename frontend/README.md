@@ -1,34 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Vantage Frontend
+
+The Vantage web panel: a [Next.js](https://nextjs.org/) application written in TypeScript, using MUI
+for the interface, NextAuth.js for session handling, and SWR for data fetching. It talks to the
+Vantage backend over the REST API and WebSocket endpoint documented in the
+[API Reference](../COMMANDS.md).
 
 ## Getting Started
 
-First, run the development server:
+1. Copy the example environment file: `cp .env.local.example .env.local`
+2. Configure the variables in `.env.local` (see [Environment Variables](#environment-variables)).
+3. Install dependencies: `npm install`
+4. Start the development server: `npm run dev`
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+Open [http://localhost:3000](http://localhost:3000) in your browser. A running Vantage backend is
+required — without it, the panel cannot log in or display any data.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start the development server on port 3000. |
+| `npm run build` | Produce a production build. |
+| `npm start` | Serve a production build (run `npm run build` first). |
+| `npm run lint` | Run ESLint via `next lint`. |
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+There is no test script: the frontend has no test tooling, and no CI job builds, lints, or tests it.
+Run `npm run lint` and `npm run build` locally, and exercise changes in a browser.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Environment Variables
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `NEXT_PUBLIC_VANTAGE_API_URL` | Backend API URL (client-side) | `http://localhost:9000/api/v2` |
+| `VANTAGE_API_URL` | Backend API URL (server-side; must be reachable from the Next.js server, which performs authentication) | `http://localhost:9000/api/v2` |
+| `NEXT_PUBLIC_VANTAGE_WEBSOCKET_URL` | WebSocket URL for the live console | `ws://localhost:9000/ws` |
+| `NEXTAUTH_SECRET` | Secret for NextAuth.js session signing | Generate with `openssl rand -base64 32` |
+| `NEXTAUTH_URL` | The canonical URL of the frontend | `http://localhost:3000` |
+
+The backend must list the frontend's origin in `server.allowedOrigins` for these requests to pass
+CORS. See the [Configuration Guide](../CONFIG.md) for the backend side of this configuration.
+
+## Project Structure
+
+- `pages/` – Next.js routes (`index`, `users`, `files`, `console`, `audit`), plus the NextAuth route
+  under `pages/api/auth/`.
+- `components/<Name>/` – One directory per React component, containing `<Name>.tsx`, an `index.ts`
+  barrel export, and an optional `<Name>.module.css`.
+- `hooks/` – Data-access hooks, one `use<Thing>.ts` per operation: reads use `useSWR`
+  (`useUsers`, `useFiles`, `useServer`, …) and writes use `useSWRMutation` (`useUserCreate`,
+  `useFileUpload`, `useFileDelete`, …).
+- `src/` – Shared utilities, including `fetchWithToken` and `mutateWithToken`.
+- `types/` – Shared TypeScript type definitions.
+- `styles/` – Global CSS.
+- `middleware.ts` – NextAuth middleware requiring an authenticated session.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [NextAuth.js Documentation](https://next-auth.js.org/)
+- [MUI Documentation](https://mui.com/material-ui/getting-started/)

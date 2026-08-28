@@ -52,10 +52,25 @@ Issues are grouped into [milestones](https://github.com/Dans-Plugins/vantage/mil
 
 ## Testing
 
-Run the backend unit tests with:
+The backend has no automated test suite yet: `backend/src/test/` does not exist and no test
+framework dependency is declared in `backend/build.gradle`. Running the `test` task reports
+`Task :test NO-SOURCE` and then `BUILD SUCCESSFUL`, which means zero tests ran rather than that
+tests passed.
 
-Linux: `cd backend && ./gradlew clean test`
-Windows: `cd backend && .\gradlew.bat clean test`
+Verify changes with the full build instead — this is the command CI runs:
+
+Linux: `cd backend && ./gradlew clean build`
+Windows: `cd backend && .\gradlew.bat clean build`
+
+A successful run confirms that jOOQ code generation succeeds, the Kotlin sources compile, and the
+shadow JAR assembles. It does not verify runtime behaviour, so test your changes manually as well.
+
+The frontend has no test tooling and is not covered by CI. Check frontend changes with
+`cd frontend && npm run lint` and `cd frontend && npm run build`, and exercise them in a browser.
+
+If you add the first backend test, declare a JUnit 5 dependency in `backend/build.gradle` and place
+the test under `backend/src/test/kotlin/uk/co/renbinden/vantage/`, mirroring the main package
+structure.
 
 ## Questions
 

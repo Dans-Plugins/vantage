@@ -54,6 +54,10 @@ Please fill out a bug report [here](https://github.com/Dans-Plugins/vantage/issu
 
 ### Unit Tests
 
+The backend has no automated test suite yet. `backend/src/test/` does not exist and no test
+framework dependency is declared in `backend/build.gradle`. The `test` task is configured
+(`useJUnitPlatform()`) and will run, but it has no sources:
+
 Linux:
 
     cd backend && ./gradlew clean test
@@ -62,7 +66,32 @@ Windows:
 
     cd backend && .\gradlew.bat clean test
 
-If you see `BUILD SUCCESSFUL`, the tests have passed.
+This reports `Task :test NO-SOURCE` followed by `BUILD SUCCESSFUL`. That means zero tests ran — not
+that tests passed. Adding the first test requires declaring a JUnit 5 dependency in
+`backend/build.gradle` and creating `backend/src/test/kotlin/uk/co/renbinden/vantage/`, mirroring
+the main package structure.
+
+### Build Verification
+
+Until a test suite exists, the build itself is the only automated check, and it is what CI runs:
+
+Linux:
+
+    cd backend && ./gradlew clean build
+
+Windows:
+
+    cd backend && .\gradlew.bat clean build
+
+A successful run confirms that jOOQ code generation succeeds, the Kotlin sources compile, and the
+shadow JAR assembles. It does not verify runtime behaviour.
+
+### Frontend
+
+The frontend has no test tooling and is not covered by CI. The available checks are:
+
+    cd frontend && npm run lint
+    cd frontend && npm run build
 
 ## Development
 
