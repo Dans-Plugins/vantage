@@ -54,9 +54,8 @@ Please fill out a bug report [here](https://github.com/Dans-Plugins/vantage/issu
 
 ### Unit Tests
 
-The backend has no automated test suite yet. `backend/src/test/` does not exist and no test
-framework dependency is declared in `backend/build.gradle`. The `test` task is configured
-(`useJUnitPlatform()`) and will run, but it has no sources:
+The backend has a JUnit 5 test suite under `backend/src/test/kotlin/uk/co/renbinden/vantage/`, which
+mirrors the main package structure. Run it with:
 
 Linux:
 
@@ -66,14 +65,14 @@ Windows:
 
     cd backend && .\gradlew.bat clean test
 
-This reports `Task :test NO-SOURCE` followed by `BUILD SUCCESSFUL`. That means zero tests ran — not
-that tests passed. Adding the first test requires declaring a JUnit 5 dependency in
-`backend/build.gradle` and creating `backend/src/test/kotlin/uk/co/renbinden/vantage/`, mirroring
-the main package structure.
+Coverage is currently limited to the user domain model (`User` and `UserId`). The handlers, the
+`Authenticated` filter, `Authenticator`, both repositories, and `MinecraftServer` have no tests yet,
+so a green `test` task says nothing about them. New tests belong beside the package they exercise,
+in a file named `<ClassUnderTest>Test.kt`.
 
 ### Build Verification
 
-Until a test suite exists, the build itself is the only automated check, and it is what CI runs:
+The full build is the check CI runs, and it includes the test task:
 
 Linux:
 
@@ -83,8 +82,9 @@ Windows:
 
     cd backend && .\gradlew.bat clean build
 
-A successful run confirms that jOOQ code generation succeeds, the Kotlin sources compile, and the
-shadow JAR assembles. It does not verify runtime behaviour.
+A successful run confirms that jOOQ code generation succeeds, the Kotlin sources compile, the test
+suite passes, and the shadow JAR assembles. Beyond the covered classes listed above, it does not
+verify runtime behaviour.
 
 ### Frontend
 

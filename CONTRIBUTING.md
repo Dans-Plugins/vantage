@@ -52,25 +52,26 @@ Issues are grouped into [milestones](https://github.com/Dans-Plugins/vantage/mil
 
 ## Testing
 
-The backend has no automated test suite yet: `backend/src/test/` does not exist and no test
-framework dependency is declared in `backend/build.gradle`. Running the `test` task reports
-`Task :test NO-SOURCE` and then `BUILD SUCCESSFUL`, which means zero tests ran rather than that
-tests passed.
+The backend is tested with JUnit 5. Tests live under
+`backend/src/test/kotlin/uk/co/renbinden/vantage/`, mirroring the main package structure, in files
+named `<ClassUnderTest>Test.kt`. Coverage is currently limited to the user domain model (`User` and
+`UserId`); most of the backend is still untested, so a green test task is not evidence that an
+untested area works.
 
-Verify changes with the full build instead — this is the command CI runs:
+Verify changes with the full build — this is the command CI runs, and it includes the test task:
 
 Linux: `cd backend && ./gradlew clean build`
 Windows: `cd backend && .\gradlew.bat clean build`
 
-A successful run confirms that jOOQ code generation succeeds, the Kotlin sources compile, and the
-shadow JAR assembles. It does not verify runtime behaviour, so test your changes manually as well.
+A successful run confirms that jOOQ code generation succeeds, the Kotlin sources compile, the test
+suite passes, and the shadow JAR assembles. It does not verify runtime behaviour outside the
+covered classes, so test your changes manually as well.
 
 The frontend has no test tooling and is not covered by CI. Check frontend changes with
 `cd frontend && npm run lint` and `cd frontend && npm run build`, and exercise them in a browser.
 
-If you add the first backend test, declare a JUnit 5 dependency in `backend/build.gradle` and place
-the test under `backend/src/test/kotlin/uk/co/renbinden/vantage/`, mirroring the main package
-structure.
+Tests that need a database, a Minecraft process, or the network are out of scope for this suite —
+prefer temporary directories and test doubles over real collaborators.
 
 ## Questions
 
