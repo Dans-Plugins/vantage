@@ -174,4 +174,11 @@ class UserTest {
 
         assertNotEquals(user, "alice")
     }
+
+    @Test
+    fun `a user is not equal to null`() {
+        val user = User("alice", "correct horse battery staple")
+
+        assertNotEquals(user, null)
+    }
 }
