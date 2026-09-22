@@ -22,6 +22,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the frontend has no test tooling or CI coverage.
 - Replaced the `create-next-app` boilerplate in `frontend/README.md` with documentation of the
   frontend's actual setup, scripts, environment variables, and project structure.
+- `CONTRIBUTING.md`, `.github/copilot-instructions.md`, and the `Build` workflow now name `main` as
+  the branch to work from and open pull requests against; the `develop` instructions they carried
+  were template wording that did not match how the repository is integrated.
+- The `Release` workflow now runs when a release is published (rather than created, which never
+  fired for drafts) and skips the rebuild when the release already has a JAR attached, so the
+  verified JAR published by the release automation is the only one on the release.
 
 ## [2.0.1] – 2023-01-01
 
