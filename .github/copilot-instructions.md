@@ -38,6 +38,8 @@ making any changes.
 
 ## Contribution Workflow
 
-- Branch from `develop` for all changes.
-- Open a pull request against `develop`, not `main`.
-- Reference the related GitHub issue in every pull request description.
+- Branch from `main` for all changes; `main` is the integration branch and the only branch the
+  `Build` workflow runs on.
+- Open a pull request against `main`.
+- Reference the related GitHub issue in the pull request description when one exists.
+- See the Making Changes section of `CONTRIBUTING.md` for the full workflow.
