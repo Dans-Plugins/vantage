@@ -15,11 +15,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Characterization tests for the console WebSocket message format (`MessageGson`) covering every
   client-to-server and server-to-client message type.
 
-### Fixed
-
-- `COMMANDS.md` said the `/ws/log` WebSocket token is sent as a message after connecting; it is a
-  `token` query parameter on the connection URL. The section now also documents the message format.
-
 ### Changed
 
 - Corrected the testing documentation in `README.md`, `CONTRIBUTING.md`, and
@@ -35,6 +30,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The `Release` workflow now runs when a release is published (rather than created, which never
   fired for drafts) and skips the rebuild when the release already has a JAR attached, so the
   verified JAR published by the release automation is the only one on the release.
+
+### Fixed
+
+- `COMMANDS.md` said the `/ws/log` WebSocket token is sent as a message after connecting; it is a
+  `token` query parameter on the connection URL. The section now also documents the message format.
 
 ## [2.0.1] – 2023-01-01
 
