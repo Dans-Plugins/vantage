@@ -81,4 +81,24 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 ### /ws/log
 
 **Description:** Live server console log stream via WebSocket.
-**Authentication:** Required (token sent as a WebSocket message after connection).
+**Authentication:** Required. Pass the JWT as the `token` query parameter when connecting (for
+example `ws://localhost:9000/ws/log?token=<jwt>`). The connection is closed with a policy-violation
+status if the parameter is missing, the token is invalid or expired, or its user no longer exists.
+
+Messages are JSON objects identified by a `type` field.
+
+Client to server:
+
+| Message | Effect |
+|---------|--------|
+| `{"type":"command","command":"<command>"}` | Runs the command on the server console if the server is running |
+| `{"type":"start"}` | Starts the server if it is not running |
+| `{"type":"ping"}` | Answered with a `pong` message |
+
+Server to client:
+
+| Message | Meaning |
+|---------|---------|
+| `{"type":"log","text":"<line>"}` | A line of server console output |
+| `{"type":"status"}` | The server has started or stopped; fetch `GET /api/v2/server` for the new state |
+| `{"type":"pong"}` | Reply to a `ping` |

@@ -12,6 +12,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `backend/build.gradle` and a test source set at `backend/src/test/kotlin/`.
 - Characterization tests for the user domain model (`User` and `UserId`) covering password hashing
   and verification, `withPassword`, `copy`, and equality.
+- Characterization tests for the console WebSocket message format (`MessageGson`) covering every
+  client-to-server and server-to-client message type.
+
+### Fixed
+
+- `COMMANDS.md` said the `/ws/log` WebSocket token is sent as a message after connecting; it is a
+  `token` query parameter on the connection URL. The section now also documents the message format.
 
 ### Changed
 

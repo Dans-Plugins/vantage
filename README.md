@@ -65,7 +65,8 @@ Windows:
 
     cd backend && .\gradlew.bat clean test
 
-Coverage is currently limited to the user domain model (`User` and `UserId`). The handlers, the
+Coverage is currently limited to the user domain model (`User` and `UserId`) and the WebSocket
+message format (`MessageGson`). The handlers, the
 `Authenticated` filter, `Authenticator`, both repositories, and `MinecraftServer` have no tests yet,
 so a green `test` task says nothing about them. New tests belong beside the package they exercise,
 in a file named `<ClassUnderTest>Test.kt`.
