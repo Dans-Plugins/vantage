@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   and verification, `withPassword`, `copy`, and equality.
 - Characterization tests for the console WebSocket message format (`MessageGson`) covering every
   client-to-server and server-to-client message type.
+- Characterization tests for the file-management handler (`FilesHandler`) covering directory
+  listing, file reads, writes, and deletes, including the current handling of `..` paths.
 
 ### Changed
 
