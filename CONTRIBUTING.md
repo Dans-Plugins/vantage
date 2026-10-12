@@ -54,10 +54,9 @@ Issues are grouped into [milestones](https://github.com/Dans-Plugins/vantage/mil
 
 The backend is tested with JUnit 5. Tests live under
 `backend/src/test/kotlin/uk/co/renbinden/vantage/`, mirroring the main package structure, in files
-named `<ClassUnderTest>Test.kt`. Coverage is currently limited to the user domain model (`User` and
-`UserId`), the WebSocket message format (`MessageGson`), and the file-management handler
-(`FilesHandler`); most of the backend is still untested,
-so a green test task is not evidence that an untested area works.
+named `<ClassUnderTest>Test.kt`. Most of the backend is still untested, so a green test task is not
+evidence that an untested area works. The Testing section of [README.md](README.md#unit-tests) is
+the single place that lists which classes are covered; update it there when you add tests.
 
 Verify changes with the full build — this is the command CI runs, and it includes the test task:
 
