@@ -13,8 +13,8 @@ making any changes.
 - Database: PostgreSQL with jOOQ and Flyway migrations
 - Authentication: JWT (jjwt) on the backend, NextAuth.js on the frontend
 - Test framework: JUnit 5 (`org.junit.jupiter:junit-jupiter`, declared in `backend/build.gradle`)
-  for the backend; the frontend has none. Backend coverage is limited to the user domain model,
-  the WebSocket message format, and the file-management handler — see the Testing section of `README.md`.
+  for the backend; the frontend has none. Most of the backend is untested; the Testing section of
+  `README.md` is the only list of covered classes, so update it there (not here) when adding tests.
 
 ## Project Structure
 

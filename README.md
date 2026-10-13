@@ -70,7 +70,9 @@ message format (`MessageGson`), and the file-management handler (`FilesHandler`)
 handlers, the `Authenticated` filter, `Authenticator`, both
 repositories, and `MinecraftServer` have no tests yet, so a green `test` task says nothing about
 them. New tests belong beside the package they exercise,
-in a file named `<ClassUnderTest>Test.kt`.
+in a file named `<ClassUnderTest>Test.kt`. This paragraph is the only list of covered classes in
+the repository; `CONTRIBUTING.md` and `.github/copilot-instructions.md` link here rather than
+repeating it, so update coverage here when adding tests.
 
 ### Build Verification
 

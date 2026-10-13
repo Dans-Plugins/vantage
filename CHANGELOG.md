@@ -32,6 +32,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The `Release` workflow now runs when a release is published (rather than created, which never
   fired for drafts) and skips the rebuild when the release already has a JAR attached, so the
   verified JAR published by the release automation is the only one on the release.
+- The list of backend classes covered by tests is now kept only in the Testing section of
+  `README.md`; `CONTRIBUTING.md` and `.github/copilot-instructions.md` link to it instead of
+  repeating it.
 
 ### Fixed
 
