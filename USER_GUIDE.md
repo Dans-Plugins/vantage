@@ -11,10 +11,10 @@
 
 1. **Set up the database** – Create a PostgreSQL database named `vantage` (or your preferred name).
 2. **Configure the backend** – Run the backend once to generate a default `config.json`, then edit it to match your environment (see [Configuration Guide](CONFIG.md)).
-3. **Start the backend** – Run `java -jar vantage-<version>-all.jar`. On first launch, an admin account is created automatically and the password is saved to `.admin_password`.
+3. **Start the backend** – Run `java -jar vantage-<version>-all.jar`. On first launch (when the database has no panel users), an account named `admin` is created automatically and its password is saved to `.admin_password` in the working directory. The backend also generates `private.pem`, the key that signs login tokens (see [Generated Files](CONFIG.md#generated-files)).
 4. **Configure the frontend** – Copy `frontend/.env.local.example` to `frontend/.env.local` and set the API URL and WebSocket URL to match your backend.
 5. **Start the frontend** – Run `npm run dev` (development) or `npm run build && npm start` (production) in the `frontend/` directory.
-6. **Log in** – Open `http://localhost:3000` in your browser and log in with the admin credentials.
+6. **Log in** – Open `http://localhost:3000` in your browser and log in with the username `admin` and the password from `.admin_password`.
 
 ## Common Scenarios
 

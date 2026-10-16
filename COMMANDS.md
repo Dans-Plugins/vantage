@@ -1,6 +1,6 @@
 # API Reference
 
-Vantage is a web-based management panel and does not use in-game commands. Instead, it exposes a REST API and a WebSocket endpoint. All endpoints (except login) require authentication via a JWT bearer token.
+Vantage is a web-based management panel and does not use in-game commands. Instead, it exposes a REST API and a WebSocket endpoint. All endpoints (except login) require authentication via a JWT bearer token. REST endpoints take it as an `Authorization: Bearer <token>` header (the WebSocket takes it as a query parameter; see below). A REST request with a missing, malformed, invalid, or expired token, or whose user no longer exists or is inactive, receives `401 Unauthorized`.
 
 ## Authentication
 
@@ -9,7 +9,7 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 **Description:** Authenticate a user and obtain a JWT token.
 **Authentication:** None required.
 **Request Body:** JSON with `username` and `password` fields.
-**Response:** JWT token on success.
+**Response:** On success, `200 OK` with JSON fields `token` (the JWT), `userId`, and `username`. The token expires 24 hours after it is issued. Returns `401 Unauthorized` if the username is unknown, the password is wrong, or the user is inactive. A successful login is recorded in the audit log as "Logged in".
 
 ## User Endpoints
 
