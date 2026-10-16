@@ -52,7 +52,7 @@ Vantage uses a `config.json` file in the backend working directory. If the file 
 
 **Type:** string
 **Default:** `"POSTGRES"`
-**Description:** The jOOQ SQL dialect to use. Must match your database type (e.g. `POSTGRES`, `MYSQL`, `H2`).
+**Description:** The jOOQ SQL dialect to use, given as a jOOQ `SQLDialect` name. Only `POSTGRES` works with the JAR as built: it bundles only the PostgreSQL JDBC driver, and the schema migration uses PostgreSQL column types (`bytea`, `timestamptz`).
 
 ## minecraft
 
@@ -92,6 +92,13 @@ Vantage uses a `config.json` file in the backend working directory. If the file 
   }
 }
 ```
+
+## Generated Files
+
+Besides `config.json`, the backend creates two files in its working directory:
+
+- `private.pem` – the RSA private key that signs login tokens. It is generated on startup if it does not exist. Keep it secret: anyone holding it can issue valid tokens. Deleting or replacing it invalidates every token already issued, so all users must log in again.
+- `.admin_password` – the generated password for the `admin` account. It is written only when the database has no panel users, which is normally the first launch.
 
 ## Frontend Environment Variables
 

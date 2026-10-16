@@ -35,11 +35,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The list of backend classes covered by tests is now kept only in the Testing section of
   `README.md`; `CONTRIBUTING.md` and `.github/copilot-instructions.md` link to it instead of
   repeating it.
+- `CONFIG.md`, `USER_GUIDE.md`, and `COMMANDS.md` now document the `private.pem` token-signing key
+  the backend generates in its working directory, the `admin` username of the generated account,
+  the login response fields and 24-hour token lifetime, and the `401 Unauthorized` response for
+  unauthenticated requests.
 
 ### Fixed
 
 - `COMMANDS.md` said the `/ws/log` WebSocket token is sent as a message after connecting; it is a
   `token` query parameter on the connection URL. The section now also documents the message format.
+- `CONFIG.md` listed `MYSQL` and `H2` as example `database.dialect` values; the JAR bundles only the
+  PostgreSQL driver and the schema uses PostgreSQL column types, so only `POSTGRES` works.
 
 ## [2.0.1] – 2023-01-01
 
