@@ -16,6 +16,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   client-to-server and server-to-client message type.
 - Characterization tests for the file-management handler (`FilesHandler`) covering directory
   listing, file reads, writes, and deletes, including the current handling of `..` paths.
+- Characterization tests for authentication (`Authenticator`, the `Authenticated` filter, and
+  `Request.userId`) covering token issue and expiry, rejected credentials and inactive users,
+  signature verification, and how the filter treats missing, malformed, and stale tokens.
 
 ### Changed
 
