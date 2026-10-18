@@ -75,6 +75,7 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 
 **Description:** Get server branding information (server name).
 **Authentication:** Required.
+**Response:** `200 OK` with JSON field `serverName`, the configured `server.name` (see [CONFIG.md](CONFIG.md)).
 
 ## WebSocket
 
