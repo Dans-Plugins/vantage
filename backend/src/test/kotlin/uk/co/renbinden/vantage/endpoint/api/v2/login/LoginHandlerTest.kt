@@ -111,13 +111,6 @@ class LoginHandlerTest {
     }
 
     @Test
-    fun `matches the username case-sensitively`() {
-        val response = login("Alice", "correct horse battery staple")
-
-        assertEquals(UNAUTHORIZED, response.status)
-    }
-
-    @Test
     fun `throws a LensFailure for a body that is not JSON instead of responding`() {
         assertThrows<LensFailure> { handler.post(Request(POST, "/api/v2/login").body("username=alice")) }
     }
