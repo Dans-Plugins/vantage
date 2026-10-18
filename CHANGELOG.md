@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Characterization tests for authentication (`Authenticator`, the `Authenticated` filter, and
   `Request.userId`) covering token issue and expiry, rejected credentials and inactive users,
   signature verification, and how the filter treats missing, malformed, and stale tokens.
+- Characterization tests for the login handler (`LoginHandler`) covering the response body, the
+  "Logged in" audit entry, and rejected logins, and for the brand handler (`BrandHandler`).
 
 ### Changed
 
