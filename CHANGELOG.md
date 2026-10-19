@@ -21,6 +21,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   signature verification, and how the filter treats missing, malformed, and stale tokens.
 - Characterization tests for the login handler (`LoginHandler`) covering the response body, the
   "Logged in" audit entry, and rejected logins, and for the brand handler (`BrandHandler`).
+- Characterization tests for the user handlers (`UserHandler` and `UsersHandler`) covering user
+  lookup, creation, and updates, their audit entries, optimistic locking, and the 50-user list page.
+- Documented the request and response bodies of the user endpoints in `COMMANDS.md`.
 
 ### Changed
 

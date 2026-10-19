@@ -17,21 +17,27 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 
 **Description:** Get details of a specific user.
 **Authentication:** Required.
+**Response:** `200 OK` with JSON fields `id`, `version`, `username`, and `status` (`ACTIVE` or `INACTIVE`). Password hashes and salts are never included. Returns `404 Not Found` if no user has that id.
 
 ### POST /api/v2/user/
 
 **Description:** Create a new user.
 **Authentication:** Required.
+**Request Body:** JSON with `username` and `password` fields.
+**Response:** `201 Created` with a `Location` header of `<server.baseUrl>/api/v2/user/<id>` and the new user in the same shape as `GET /api/v2/user/{id}`. New users are `ACTIVE` at version `1`. The creation is recorded in the audit log as "Created user <username> (<id>)".
 
 ### PATCH /api/v2/user/{id}
 
 **Description:** Update an existing user.
 **Authentication:** Required.
+**Request Body:** JSON with a required `version` (the user's current version) and optional `username`, `password`, and `status` fields; omitted fields are left unchanged.
+**Response:** `200 OK` with the updated user, whose `version` has gone up by one. The update is recorded in the audit log as "Updated user <username> (<id>)". Returns `404 Not Found` if no user has that id. A `version` that does not match the stored one changes nothing and currently returns `500 Internal Server Error`, not `409 Conflict`.
 
 ### GET /api/v2/users
 
-**Description:** List all users.
+**Description:** List users, ordered by username.
 **Authentication:** Required.
+**Response:** `200 OK` with JSON fields `users` (the first 50 users, each in the same shape as `GET /api/v2/user/{id}`) and `pagination.totalItems` (the total number of users). The route takes no page parameter, so users beyond the first 50 cannot be listed.
 
 ## Server Endpoints
 
