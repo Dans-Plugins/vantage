@@ -55,8 +55,9 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 
 ### GET /api/v2/audit/{page}
 
-**Description:** Get a paginated list of audit log entries.
+**Description:** Get a paginated list of audit log entries, newest first.
 **Authentication:** Required.
+**Response:** `200 OK` with JSON fields `items` and `pagination.totalItems` (the total number of audit log entries). Each page holds up to 50 entries, and `{page}` counts from `0`; a `{page}` that is not a number is treated as `0`. Each item has a `user` (in the same shape as `GET /api/v2/user/{id}`), a `description`, and a `time` as an ISO-8601 string.
 
 ## File Endpoints
 

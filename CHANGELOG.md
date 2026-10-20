@@ -24,6 +24,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Characterization tests for the user handlers (`UserHandler` and `UsersHandler`) covering user
   lookup, creation, and updates, their audit entries, optimistic locking, and the 50-user list page.
 - Documented the request and response bodies of the user endpoints in `COMMANDS.md`.
+- Characterization tests for the audit handler (`AuditHandler`) covering newest-first ordering,
+  the 50-item page, non-numeric pages, and the user embedded in each item.
+- Documented the response body of `GET /api/v2/audit/{page}` in `COMMANDS.md`.
 
 ### Changed
 
