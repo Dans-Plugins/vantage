@@ -67,8 +67,9 @@ Windows:
 
 Coverage is currently limited to the user domain model (`User` and `UserId`), the WebSocket
 message format (`MessageGson`), the file-management handler (`FilesHandler`), and authentication
-(`Authenticator`, the `Authenticated` filter, and `Request.userId`), and the login, brand, and user
-handlers (`LoginHandler`, `BrandHandler`, `UserHandler`, and `UsersHandler`). The other handlers, both
+(`Authenticator`, the `Authenticated` filter, and `Request.userId`), and the login, brand, user, and
+audit handlers (`LoginHandler`, `BrandHandler`, `UserHandler`, `UsersHandler`, and `AuditHandler`).
+The server handlers (`ServerHandler` and `ServerLogHandler`), both
 repositories, and `MinecraftServer` have no tests yet, so a green `test` task says nothing about
 them. New tests belong beside the package they exercise,
 in a file named `<ClassUnderTest>Test.kt`. This paragraph is the only list of covered classes in
