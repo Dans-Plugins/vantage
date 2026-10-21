@@ -45,11 +45,13 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 
 **Description:** Get the current server status.
 **Authentication:** Required.
+**Response:** `200 OK` with JSON field `isRunning`, `true` while the Minecraft server process is running and `false` otherwise.
 
 ### GET /api/v2/server/log
 
-**Description:** Get recent server log entries.
+**Description:** Get the server console log.
 **Authentication:** Required.
+**Response:** `200 OK` with JSON field `log`, a list of every line the Minecraft server has written to its console since the backend started, oldest first. The list is never trimmed or paged.
 
 ## Audit Endpoints
 
