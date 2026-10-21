@@ -51,7 +51,7 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 
 **Description:** Get the server console log.
 **Authentication:** Required.
-**Response:** `200 OK` with JSON field `log`, a list of every line the Minecraft server has written to its console since the backend started, oldest first. The list is never trimmed or paged.
+**Response:** `200 OK` with JSON field `log`, a list of every line the Minecraft server process has written to standard output since the backend started, oldest first; standard error is not captured. The list is never trimmed or paged.
 
 ## Audit Endpoints
 
