@@ -94,6 +94,20 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 **Authentication:** Required. Pass the JWT as the `token` query parameter when connecting (for
 example `ws://localhost:9000/ws/log?token=<jwt>`). The connection is closed with a policy-violation
 status if the parameter is missing, the token is invalid or expired, or its user no longer exists.
+Unlike the REST endpoints, the WebSocket does not check whether the user is inactive: a token
+issued before its user was deactivated still opens the console until it expires.
+
+The close reason names why a token was rejected:
+
+| Token | Close reason |
+|-------|--------------|
+| `token` parameter missing | `token parameter must be specified` |
+| Empty | `empty token` |
+| Not a JWT | `invalid token` |
+| Unsigned JWT | `invalid token format` |
+| Signed with a different key | `signature validation failed` |
+| Expired | `expired token` |
+| Valid, but its user no longer exists | the default policy-violation reason |
 
 Messages are JSON objects identified by a `type` field.
 
@@ -104,6 +118,10 @@ Client to server:
 | `{"type":"command","command":"<command>"}` | Runs the command on the server console if the server is running |
 | `{"type":"start"}` | Starts the server if it is not running |
 | `{"type":"ping"}` | Answered with a `pong` message |
+
+A command that is run is recorded in the audit log as `Executed command "<command>"`, and a start as
+`Started the server`. A command sent while the server is stopped, or a start sent while it is
+running, is ignored and not recorded.
 
 Server to client:
 

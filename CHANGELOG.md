@@ -31,6 +31,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the running state and the full, untrimmed console log.
 - Documented the response bodies of `GET /api/v2/server` and `GET /api/v2/server/log` in
   `COMMANDS.md`.
+- Characterization tests for the console WebSocket handler (`ConsoleHandler`) covering each token
+  rejection and its close reason, command and start handling, audit entries, and ping replies.
+- Documented in `COMMANDS.md` that `/ws/log` accepts tokens of inactive users, which close reason
+  each rejected token receives, and which console actions are audited.
 
 ### Changed
 
