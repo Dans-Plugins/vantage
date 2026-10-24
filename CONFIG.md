@@ -1,6 +1,8 @@
 # Configuration Guide
 
-Vantage uses a `config.json` file in the backend working directory. If the file does not exist on first launch, a default configuration is generated automatically.
+Vantage uses a `config.json` file in the backend working directory. If the file does not exist on first launch, a default configuration is generated automatically. The generated file leaves out `database.username` and `database.password`, because both default to `null`.
+
+Any key omitted from `config.json` takes its default, including a whole section, so a file containing only `{"server": {"port": 8080}}` is valid. Unknown keys are ignored. Do not set a section to `null` (for example `"server": null`): it is not replaced with the defaults, and startup fails.
 
 ## server
 

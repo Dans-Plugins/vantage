@@ -69,7 +69,7 @@ Coverage is currently limited to the user domain model (`User` and `UserId`), th
 message format (`MessageGson`), the file-management handler (`FilesHandler`), and authentication
 (`Authenticator`, the `Authenticated` filter, and `Request.userId`), and the login, brand, user, audit, and
 server handlers (`LoginHandler`, `BrandHandler`, `UserHandler`, `UsersHandler`, `AuditHandler`,
-`ServerHandler`, and `ServerLogHandler`), and the console WebSocket handler (`ConsoleHandler`). Both repositories and `MinecraftServer` have no tests
+`ServerHandler`, and `ServerLogHandler`), and the console WebSocket handler (`ConsoleHandler`), and the configuration model (`Config`). Both repositories and `MinecraftServer` have no tests
 yet, so a green `test` task says nothing about
 them. New tests belong beside the package they exercise,
 in a file named `<ClassUnderTest>Test.kt`. This paragraph is the only list of covered classes in

@@ -35,6 +35,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   rejection and its close reason, command and start handling, audit entries, and ping replies.
 - Documented in `COMMANDS.md` that `/ws/log` accepts tokens of inactive users, which close reason
   each rejected token receives, and which console actions are audited.
+- Characterization tests for the configuration model (`Config` and its sections) covering the
+  defaults, the generated `config.json`, and how omitted, unknown, and `null` keys are read.
+- Documented in `CONFIG.md` that keys omitted from `config.json` take their defaults and that the
+  generated file leaves out `database.username` and `database.password`.
 
 ### Changed
 
