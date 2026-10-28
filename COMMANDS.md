@@ -63,20 +63,38 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 
 ## File Endpoints
 
+`{path}` is relative to the configured `minecraft.directory` (see [CONFIG.md](CONFIG.md)) and is a
+single path segment: address a nested path by encoding each `/` as `%2F`, for example
+`/api/v2/files/plugins%2Fconfig.yml`. File operations are not recorded in the audit log.
+
+The containment check that `GET` and `PUT` apply does not normalize `..`, so a `{path}` of `..`
+reaches the parent of `minecraft.directory`. `DELETE` applies no containment check at all.
+
 ### GET /api/v2/files/\[{path}\]
 
 **Description:** List files or get file contents at the given path.
 **Authentication:** Required.
+**Response:** For a directory (or no `{path}`, meaning `minecraft.directory` itself), `200 OK` with
+JSON field `files`, a list of entries with `name` and `isDirectory`; directories come first, then
+files, each sorted by name. For a file, `200 OK` with the file's raw contents as the body. A path
+that does not exist fails with an unhandled server error rather than `404 Not Found`.
 
 ### PUT /api/v2/files/\[{path}\]
 
 **Description:** Upload or update a file at the given path.
 **Authentication:** Required.
+**Request Body:** The raw file contents.
+**Response:** `204 No Content` once the body has been written, creating the file or replacing its
+contents. Returns `400 Bad Request` if the parent directory does not exist; it is not created.
+A `PUT` without a `{path}` targets `minecraft.directory` itself and fails with an unhandled server
+error.
 
 ### DELETE /api/v2/files/{path}
 
 **Description:** Delete a file at the given path.
 **Authentication:** Required.
+**Response:** `204 No Content`. A directory is deleted together with everything in it. A path that
+does not exist also returns `204 No Content`.
 
 ## Brand Endpoint
 

@@ -5,6 +5,7 @@ import org.http4k.core.Method.GET
 import org.http4k.core.Method.PUT
 import org.http4k.core.Request
 import org.http4k.core.Response
+import org.http4k.core.Status.Companion.BAD_REQUEST
 import org.http4k.core.Status.Companion.NO_CONTENT
 import org.http4k.core.Status.Companion.OK
 import org.http4k.routing.bind
@@ -95,6 +96,18 @@ class FilesHandlerTest {
     }
 
     @Test
+    fun `get with an encoded slash reads a file in a subdirectory`() {
+        // The panel addresses nested paths as one path segment, encoding "/" as "%2F".
+        File(baseDirectory, "plugins").mkdir()
+        File(baseDirectory, "plugins/config.yml").writeText("enabled: true")
+
+        val response = app(Request(GET, "/plugins%2Fconfig.yml"))
+
+        assertEquals(OK, response.status)
+        assertEquals("enabled: true", response.bodyString())
+    }
+
+    @Test
     fun `get on a missing file throws rather than returning not found`() {
         // Current behavior: the handler opens a FileInputStream without an existence check.
         assertThrows<FileNotFoundException> { app(Request(GET, "/missing.txt")) }
@@ -130,6 +143,24 @@ class FilesHandlerTest {
         app(Request(PUT, "/eula.txt").body("eula=true"))
 
         assertEquals("eula=true", File(baseDirectory, "eula.txt").readText())
+    }
+
+    @Test
+    fun `put with an encoded slash writes into an existing subdirectory`() {
+        File(baseDirectory, "plugins").mkdir()
+
+        val response = app(Request(PUT, "/plugins%2Fconfig.yml").body("enabled: true"))
+
+        assertEquals(NO_CONTENT, response.status)
+        assertEquals("enabled: true", File(baseDirectory, "plugins/config.yml").readText())
+    }
+
+    @Test
+    fun `put into a missing subdirectory is rejected`() {
+        val response = app(Request(PUT, "/plugins%2Fconfig.yml").body("enabled: true"))
+
+        assertEquals(BAD_REQUEST, response.status)
+        assertFalse(File(baseDirectory, "plugins").exists())
     }
 
     @Test

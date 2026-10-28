@@ -39,6 +39,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   defaults, the generated `config.json`, and how omitted, unknown, and `null` keys are read.
 - Documented in `CONFIG.md` that keys omitted from `config.json` take their defaults and that the
   generated file leaves out `database.username` and `database.password`.
+- Documented the file endpoints in `COMMANDS.md`: how nested paths are addressed, the listing and
+  upload responses, recursive deletes, and the current handling of `..` paths, with tests covering
+  nested reads and writes and uploads into a missing directory.
 
 ### Changed
 
