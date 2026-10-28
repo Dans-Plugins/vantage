@@ -67,8 +67,9 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 single path segment: address a nested path by encoding each `/` as `%2F`, for example
 `/api/v2/files/plugins%2Fconfig.yml`. File operations are not recorded in the audit log.
 
-The containment check that `GET` and `PUT` apply does not normalize `..`, so a `{path}` of `..`
-reaches the parent of `minecraft.directory`. `DELETE` applies no containment check at all.
+The containment check that `GET` and `PUT` apply does not normalize `..`, so a `{path}` containing
+`..` can resolve outside `minecraft.directory`; for example, `GET` with a `{path}` of `..` lists its
+parent. `DELETE` applies no containment check at all.
 
 ### GET /api/v2/files/\[{path}\]
 
