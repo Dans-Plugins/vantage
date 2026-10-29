@@ -65,6 +65,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   the backend generates in its working directory, the `admin` username of the generated account,
   the login response fields and 24-hour token lifetime, and the `401 Unauthorized` response for
   unauthenticated requests.
+- `USER_GUIDE.md` now names the panel's actual controls (**Create** and **Edit** on the Users page,
+  rather than **Create User** and clicking a user) and describes the Files, Console, Audit, and
+  Home pages as the frontend implements them, including that deletes are immediate and recursive.
 
 ### Fixed
 
