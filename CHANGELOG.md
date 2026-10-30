@@ -42,6 +42,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Documented the file endpoints in `COMMANDS.md`: how nested paths are addressed, the listing and
   upload responses, recursive deletes, and the current handling of `..` paths, with tests covering
   nested reads and writes and uploads into a missing directory.
+- Characterization tests for the Minecraft server process wrapper (`MinecraftServer`), run against a
+  stand-in Java program, covering the captured standard output (standard error is not captured),
+  the working directory, whitespace splitting of the command, the running state, and the messages
+  sent to console sockets.
 
 ### Changed
 
