@@ -46,6 +46,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   stand-in Java program, covering the captured standard output (standard error is not captured),
   the working directory, whitespace splitting of the command, the running state, and the messages
   sent to console sockets.
+- Characterization tests for the audit repository (`AuditRepository`), run against jOOQ's mock JDBC
+  connection, covering newest-first ordering, the default and requested page bindings, row mapping,
+  the count query, the UTC time binding on insert, and the inserted row returned from the database.
 
 ### Changed
 

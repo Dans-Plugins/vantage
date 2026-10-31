@@ -70,9 +70,10 @@ message format (`MessageGson`), the file-management handler (`FilesHandler`), an
 (`Authenticator`, the `Authenticated` filter, and `Request.userId`), and the login, brand, user, audit, and
 server handlers (`LoginHandler`, `BrandHandler`, `UserHandler`, `UsersHandler`, `AuditHandler`,
 `ServerHandler`, and `ServerLogHandler`), and the console WebSocket handler (`ConsoleHandler`), and the configuration model (`Config`), and the Minecraft server process wrapper (`MinecraftServer`, run
-against a stand-in Java program rather than a real server). Both repositories have no tests
-yet, so a green `test` task says nothing about
-them. New tests belong beside the package they exercise,
+against a stand-in Java program rather than a real server), and the audit repository
+(`AuditRepository`, checked against jOOQ's mock JDBC connection for the SQL it renders and the
+rows it maps, never against PostgreSQL). `UserRepository` has no tests yet, so a green `test` task
+says nothing about it. New tests belong beside the package they exercise,
 in a file named `<ClassUnderTest>Test.kt`. This paragraph is the only list of covered classes in
 the repository; `CONTRIBUTING.md` and `.github/copilot-instructions.md` link here rather than
 repeating it, so update coverage here when adding tests.
