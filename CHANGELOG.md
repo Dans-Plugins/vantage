@@ -49,6 +49,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Characterization tests for the audit repository (`AuditRepository`), run against jOOQ's mock JDBC
   connection, covering newest-first ordering, the default and requested page bindings, row mapping,
   the count query, the UTC time binding on insert, and the inserted row returned from the database.
+- Characterization tests for the user repository (`UserRepository`), run against jOOQ's mock JDBC
+  connection, covering lookups by id and username, unreadable status values, username ordering, the
+  default and requested page bindings, the count query, and the optimistic-locking upsert.
 
 ### Changed
 
