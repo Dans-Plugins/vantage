@@ -5,6 +5,7 @@ import org.http4k.core.Method.GET
 import org.http4k.core.Method.PATCH
 import org.http4k.core.Method.POST
 import org.http4k.core.Request
+import org.http4k.core.Status.Companion.CONFLICT
 import org.http4k.core.Status.Companion.CREATED
 import org.http4k.core.Status.Companion.INTERNAL_SERVER_ERROR
 import org.http4k.core.Status.Companion.NOT_FOUND
@@ -27,6 +28,7 @@ import uk.co.renbinden.vantage.auth.PrivateKeyFile
 import uk.co.renbinden.vantage.user.User
 import uk.co.renbinden.vantage.user.UserStatus.ACTIVE
 import uk.co.renbinden.vantage.user.UserStatus.INACTIVE
+import java.sql.SQLException
 
 class UserHandlerTest {
 
@@ -157,10 +159,19 @@ class UserHandlerTest {
     }
 
     @Test
-    fun `patch with a stale version responds 500 rather than 409 and changes nothing`() {
-        // UserRepository.upsert throws OptimisticLockingFailureException directly, so resultFrom's
-        // failure reason is that exception and its cause is null; the CONFLICT branch never matches.
+    fun `patch with a stale version responds 409 and changes nothing`() {
         val response = app(update(bob, UserUpdateRequest(5, "robert", null, null)).authorized())
+
+        assertEquals(CONFLICT, response.status)
+        assertEquals(bob, storedUser("bob"))
+        assertTrue(audit.items.isEmpty())
+    }
+
+    @Test
+    fun `patch responds 500 when the update fails for any other reason and writes no audit entry`() {
+        users.upsertFailure = SQLException("connection lost")
+
+        val response = app(update(bob, UserUpdateRequest(0, "robert", null, null)).authorized())
 
         assertEquals(INTERNAL_SERVER_ERROR, response.status)
         assertEquals(bob, storedUser("bob"))

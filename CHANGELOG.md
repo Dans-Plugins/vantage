@@ -81,6 +81,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- `PATCH /api/v2/user/{id}` with a stale `version` now returns `409 Conflict`; it returned
+  `500 Internal Server Error` because the handler checked the failure's cause rather than the
+  failure itself.
 - `COMMANDS.md` said the `/ws/log` WebSocket token is sent as a message after connecting; it is a
   `token` query parameter on the connection URL. The section now also documents the message format.
 - `CONFIG.md` listed `MYSQL` and `H2` as example `database.dialect` values; the JAR bundles only the

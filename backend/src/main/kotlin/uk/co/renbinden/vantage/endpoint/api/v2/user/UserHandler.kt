@@ -74,7 +74,7 @@ class UserHandler(
         val upsertedUser = resultFrom {
             userRepository.upsert(updatedUser)
         }.onFailure { failure ->
-            if (failure.reason.cause is OptimisticLockingFailureException) {
+            if (failure.reason is OptimisticLockingFailureException) {
                 return Response(CONFLICT)
             } else {
                 return Response(INTERNAL_SERVER_ERROR)
