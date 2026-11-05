@@ -10,6 +10,7 @@ import uk.co.renbinden.vantage.user.User
 import uk.co.renbinden.vantage.user.UserId
 import uk.co.renbinden.vantage.user.UserRepository
 import uk.co.renbinden.vantage.user.UserStatus
+import java.sql.SQLException
 
 /**
  * A [UserRepository] backed by jOOQ's [MockConnection] instead of PostgreSQL.
@@ -23,17 +24,23 @@ import uk.co.renbinden.vantage.user.UserStatus
  *   stored user whose version matches with version + 1, mirroring the `on conflict ... where`
  *   clause. A version mismatch returns no row, as PostgreSQL would.
  *
- * Replace the contents of [users] to change what later queries return.
+ * Replace the contents of [users] to change what later queries return, and set [upsertFailure] to
+ * make `upsert(User)` fail as a database error would.
  */
 class InMemoryUserRepository {
 
     val users = mutableListOf<User>()
 
+    var upsertFailure: SQLException? = null
+
     val repository = UserRepository(DSL.using(MockConnection { context ->
         val sql = context.sql()
         val bindings = context.bindings()
         when {
-            sql.startsWith("insert") -> arrayOf(userResult(upsert(bindings)))
+            sql.startsWith("insert") -> {
+                upsertFailure?.let { throw it }
+                arrayOf(userResult(upsert(bindings)))
+            }
             sql.contains("count(*)") -> {
                 val result = DSL.using(POSTGRES).newResult(DSL.count())
                 result.add(DSL.using(POSTGRES).newRecord(DSL.count()).values(users.size))

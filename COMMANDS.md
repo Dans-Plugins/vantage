@@ -31,7 +31,7 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 **Description:** Update an existing user.
 **Authentication:** Required.
 **Request Body:** JSON with a required `version` (the user's current version) and optional `username`, `password`, and `status` fields; omitted fields are left unchanged.
-**Response:** `200 OK` with the updated user, whose `version` has gone up by one. The update is recorded in the audit log as "Updated user <username> (<id>)". Returns `404 Not Found` if no user has that id. A `version` that does not match the stored one changes nothing and currently returns `500 Internal Server Error`, not `409 Conflict`.
+**Response:** `200 OK` with the updated user, whose `version` has gone up by one. The update is recorded in the audit log as "Updated user <username> (<id>)". Returns `404 Not Found` if no user has that id. A `version` that does not match the stored one changes nothing and returns `409 Conflict`.
 
 ### GET /api/v2/users
 
