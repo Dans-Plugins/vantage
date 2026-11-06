@@ -84,6 +84,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `PATCH /api/v2/user/{id}` with a stale `version` now returns `409 Conflict`; it returned
   `500 Internal Server Error` because the handler checked the failure's cause rather than the
   failure itself.
+- `POST /api/v2/user/` and `PATCH /api/v2/user/{id}` now resolve the acting user before writing. A
+  token that failed verification after passing the authentication filter, such as one expiring in
+  between, could previously leave a change saved with no audit entry.
 - `COMMANDS.md` said the `/ws/log` WebSocket token is sent as a message after connecting; it is a
   `token` query parameter on the connection URL. The section now also documents the message format.
 - `CONFIG.md` listed `MYSQL` and `H2` as example `database.dialect` values; the JAR bundles only the
