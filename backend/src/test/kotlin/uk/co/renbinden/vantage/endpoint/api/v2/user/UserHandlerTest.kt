@@ -1,5 +1,6 @@
 package uk.co.renbinden.vantage.endpoint.api.v2.user
 
+import io.jsonwebtoken.JwtException
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.PATCH
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import uk.co.renbinden.vantage.audit.InMemoryAuditRepository
 import uk.co.renbinden.vantage.auth.Authenticator
 import uk.co.renbinden.vantage.auth.InMemoryUserRepository
@@ -121,11 +123,21 @@ class UserHandlerTest {
     }
 
     @Test
-    fun `post without a token still creates the user, then responds 401 with no audit entry`() {
+    fun `post without a token responds 401, creates nothing, and writes no audit entry`() {
         val response = app(create("carol", "s3cret"))
 
         assertEquals(UNAUTHORIZED, response.status)
-        assertTrue(storedUser("carol").checkPassword("s3cret"))
+        assertEquals(listOf(alice, bob), users.users)
+        assertTrue(audit.items.isEmpty())
+    }
+
+    @Test
+    fun `post with a token that fails verification creates nothing`() {
+        assertThrows<JwtException> {
+            app(create("carol", "s3cret").header("Authorization", "Bearer not-a-token"))
+        }
+
+        assertEquals(listOf(alice, bob), users.users)
         assertTrue(audit.items.isEmpty())
     }
 
@@ -189,11 +201,21 @@ class UserHandlerTest {
     }
 
     @Test
-    fun `patch without a token still applies the update, then responds 401 with no audit entry`() {
+    fun `patch without a token responds 401, changes nothing, and writes no audit entry`() {
         val response = app(update(bob, UserUpdateRequest(0, "robert", null, null)))
 
         assertEquals(UNAUTHORIZED, response.status)
-        assertEquals(1, storedUser("robert").version)
+        assertEquals(bob, storedUser("bob"))
+        assertTrue(audit.items.isEmpty())
+    }
+
+    @Test
+    fun `patch with a token that fails verification changes nothing`() {
+        assertThrows<JwtException> {
+            app(update(bob, UserUpdateRequest(0, "robert", null, null)).header("Authorization", "Bearer not-a-token"))
+        }
+
+        assertEquals(bob, storedUser("bob"))
         assertTrue(audit.items.isEmpty())
     }
 

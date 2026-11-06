@@ -38,12 +38,12 @@ class UserHandler(
     }
 
     fun post(request: Request): Response {
+        val userId = request.userId(authenticator) ?: return Response(UNAUTHORIZED)
         val userCreateRequest = UserCreateRequest.lens(request)
         val upsertedUser = userRepository.upsert(User(
             userCreateRequest.username,
             userCreateRequest.password
         ))
-        val userId = request.userId(authenticator) ?: return Response(UNAUTHORIZED)
         auditRepository.insert(
             AuditItem(
                 userId,
@@ -57,6 +57,7 @@ class UserHandler(
     }
 
     fun patch(request: Request): Response {
+        val userId = request.userId(authenticator) ?: return Response(UNAUTHORIZED)
         val id = request.path("id")?.let(::UserId) ?: return Response(NOT_FOUND)
         val userUpdateRequest = UserUpdateRequest.lens(request)
         val user = userRepository.getUser(id) ?: return Response(NOT_FOUND)
@@ -80,7 +81,6 @@ class UserHandler(
                 return Response(INTERNAL_SERVER_ERROR)
             }
         }
-        val userId = request.userId(authenticator) ?: return Response(UNAUTHORIZED)
         auditRepository.insert(
             AuditItem(
                 userId,
