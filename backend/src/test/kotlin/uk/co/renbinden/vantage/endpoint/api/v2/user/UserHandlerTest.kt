@@ -13,8 +13,10 @@ import org.http4k.core.Status.Companion.NOT_FOUND
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Status.Companion.UNAUTHORIZED
 import org.http4k.core.with
+import org.http4k.lens.LensFailure
 import org.http4k.routing.bind
 import org.http4k.routing.routes
+import org.jooq.exception.DataAccessException
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -139,6 +141,35 @@ class UserHandlerTest {
 
         assertEquals(listOf(alice, bob), users.users)
         assertTrue(audit.items.isEmpty())
+    }
+
+    @Test
+    fun `post throws instead of responding when the write fails, and writes no audit entry`() {
+        // A taken username fails this way: the upsert's conflict target is the id, not the username.
+        users.upsertFailure = SQLException("duplicate key value violates unique constraint")
+
+        assertThrows<DataAccessException> { app(create("bob", "s3cret").authorized()) }
+
+        assertEquals(listOf(alice, bob), users.users)
+        assertTrue(audit.items.isEmpty())
+    }
+
+    @Test
+    fun `post throws a LensFailure for a body that is not JSON instead of responding`() {
+        assertThrows<LensFailure> {
+            app(Request(POST, "/api/v2/user/").body("not json").authorized())
+        }
+
+        assertEquals(listOf(alice, bob), users.users)
+    }
+
+    @Test
+    fun `patch throws a LensFailure for a body that is not JSON instead of responding`() {
+        assertThrows<LensFailure> {
+            app(Request(PATCH, "/api/v2/user/${bob.id.value}").body("not json").authorized())
+        }
+
+        assertEquals(bob, storedUser("bob"))
     }
 
     @Test
