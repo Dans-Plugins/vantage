@@ -106,7 +106,7 @@ The frontend has no test tooling and is not covered by CI. The available checks 
 
 ### Backend
 
-1. Configure `config.json` in the backend working directory (see [Configuration Guide](CONFIG.md)).
+1. Configure `config.json` in the backend working directory (see [Configuration Guide](CONFIG.md)). If the file does not exist, the first run generates it with the defaults.
 2. Build the backend: `cd backend && ./gradlew build`
 3. Run: `java -jar build/libs/vantage-*-all.jar`
 
