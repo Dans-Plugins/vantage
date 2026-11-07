@@ -4,6 +4,8 @@ Vantage uses a `config.json` file in the backend working directory. If the file 
 
 Any key omitted from `config.json` takes its default, including a whole section, so a file containing only `{"server": {"port": 8080}}` is valid. Unknown keys are ignored. Do not set a section to `null` (for example `"server": null`): it is not replaced with the defaults, and startup fails.
 
+The backend reads `config.json` once, at startup, so restart it to apply a change.
+
 ## server
 
 ### server.name
@@ -28,7 +30,7 @@ Any key omitted from `config.json` takes its default, including a whole section,
 
 **Type:** list of strings
 **Default:** `["http://localhost:3000"]`
-**Description:** List of origins allowed to make cross-origin requests (CORS). Add the URL of your frontend deployment here.
+**Description:** List of origins allowed to make cross-origin requests (CORS). Add the URL of your frontend deployment here. This applies to the REST API only; the `/ws/log` WebSocket does not check the origin.
 
 ## database
 
@@ -62,13 +64,13 @@ Any key omitted from `config.json` takes its default, including a whole section,
 
 **Type:** string
 **Default:** `"java -jar spigot-1.19.2.jar -nogui"`
-**Description:** The command used to start the Minecraft server process.
+**Description:** The command used to start the Minecraft server process, which runs when the backend starts and when **Start** is clicked on the Console page. It runs in `minecraft.directory`, so a relative JAR path is resolved from there. The command is split on whitespace with no quoting, so an argument cannot contain a space.
 
 ### minecraft.directory
 
 **Type:** string
 **Default:** `"./minecraft-server"`
-**Description:** The working directory for the Minecraft server. This is also the root directory for the file browser.
+**Description:** The working directory for the Minecraft server. This is also the root directory for the file browser. It is created if it does not exist; if the path is a file, the Minecraft server does not start.
 
 ## Example
 

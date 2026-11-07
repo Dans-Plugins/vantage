@@ -2,6 +2,8 @@
 
 Vantage is a web-based management panel and does not use in-game commands. Instead, it exposes a REST API and a WebSocket endpoint. All endpoints (except login) require authentication via a JWT bearer token. REST endpoints take it as an `Authorization: Bearer <token>` header (the WebSocket takes it as a query parameter; see below). A REST request with a missing, malformed, invalid, or expired token, or whose user no longer exists or is inactive, receives `401 Unauthorized`.
 
+A `POST /api/v2/login`, `POST /api/v2/user/`, or `PATCH /api/v2/user/{id}` whose body is not the expected JSON fails with an unhandled server error rather than `400 Bad Request`.
+
 ## Authentication
 
 ### POST /api/v2/login
@@ -24,14 +26,14 @@ Vantage is a web-based management panel and does not use in-game commands. Inste
 **Description:** Create a new user.
 **Authentication:** Required.
 **Request Body:** JSON with `username` and `password` fields.
-**Response:** `201 Created` with a `Location` header of `<server.baseUrl>/api/v2/user/<id>` and the new user in the same shape as `GET /api/v2/user/{id}`. New users are `ACTIVE` at version `1`. The creation is recorded in the audit log as "Created user <username> (<id>)".
+**Response:** `201 Created` with a `Location` header of `<server.baseUrl>/api/v2/user/<id>` and the new user in the same shape as `GET /api/v2/user/{id}`. New users are `ACTIVE` at version `1`. The creation is recorded in the audit log as "Created user <username> (<id>)". Usernames are unique: a taken username creates nothing and fails with an unhandled server error rather than `409 Conflict`.
 
 ### PATCH /api/v2/user/{id}
 
 **Description:** Update an existing user.
 **Authentication:** Required.
 **Request Body:** JSON with a required `version` (the user's current version) and optional `username`, `password`, and `status` fields; omitted fields are left unchanged.
-**Response:** `200 OK` with the updated user, whose `version` has gone up by one. The update is recorded in the audit log as "Updated user <username> (<id>)". Returns `404 Not Found` if no user has that id. A `version` that does not match the stored one changes nothing and returns `409 Conflict`.
+**Response:** `200 OK` with the updated user, whose `version` has gone up by one. The update is recorded in the audit log as "Updated user <username> (<id>)". Returns `404 Not Found` if no user has that id. A `version` that does not match the stored one changes nothing and returns `409 Conflict`. A `username` already taken by another user changes nothing and returns `500 Internal Server Error`.
 
 ### GET /api/v2/users
 
@@ -114,7 +116,8 @@ does not exist also returns `204 No Content`.
 example `ws://localhost:9000/ws/log?token=<jwt>`). The connection is closed with a policy-violation
 status if the parameter is missing, the token is invalid or expired, or its user no longer exists.
 Unlike the REST endpoints, the WebSocket does not check whether the user is inactive: a token
-issued before its user was deactivated still opens the console until it expires.
+issued before its user was deactivated still opens the console until it expires. The token is
+checked only when connecting, so an open connection keeps working after the token expires.
 
 The close reason names why a token was rejected:
 
@@ -142,7 +145,8 @@ A command that is run is recorded in the audit log as `Executed command "<comman
 `Started the server`. A command sent while the server is stopped, or a start sent while it is
 running, is ignored and not recorded.
 
-Server to client:
+Server to client (nothing is replayed on connecting, so fetch `GET /api/v2/server/log` for earlier
+output):
 
 | Message | Meaning |
 |---------|---------|

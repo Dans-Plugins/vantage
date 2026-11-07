@@ -78,6 +78,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `USER_GUIDE.md` now names the panel's actual controls (**Create** and **Edit** on the Users page,
   rather than **Create User** and clicking a user) and describes the Files, Console, Audit, and
   Home pages as the frontend implements them, including that deletes are immediate and recursive.
+- `USER_GUIDE.md`, `CONFIG.md`, and `README.md` now cover how the Minecraft server is run: where its
+  JAR goes, that it starts with the backend, how `minecraft.command` is split, that
+  `minecraft.directory` is created if missing, that `stop` should be sent before shutting down the
+  backend, and why a failed start can leave the console empty. They also note that `NEXTAUTH_SECRET`
+  must be set, that `config.json` is read only at startup and is written before the database is
+  contacted, that `server.allowedOrigins` does not cover the WebSocket, which actions the audit log
+  records, and that building the backend needs Java 17 specifically.
+- `COMMANDS.md` now documents the failure responses for a taken username and a body that is not the
+  expected JSON, with tests covering them on `POST /api/v2/user/` and `PATCH /api/v2/user/{id}`, and
+  that `/ws/log` replays nothing on connecting and checks the token only when connecting.
 
 ### Fixed
 

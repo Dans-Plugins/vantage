@@ -8,7 +8,7 @@ Vantage is a web-based management panel for Minecraft servers. It provides a mod
 
 ### Prerequisites
 
-- Java 17 or later
+- Java 17 to build the backend (the Gradle wrapper is pinned to Gradle 7.4.2, which does not run on newer JDKs); Java 17 or later to run the JAR
 - Node.js 16 or later
 - PostgreSQL database
 
@@ -17,7 +17,7 @@ Vantage is a web-based management panel for Minecraft servers. It provides a mod
 1. Clone the repository: `git clone https://github.com/Dans-Plugins/vantage.git`
 2. Navigate to the backend directory: `cd vantage/backend`
 3. Build the backend: `./gradlew build`
-4. Configure `config.json` (see [Configuration Guide](CONFIG.md)).
+4. Configure `config.json` (see [Configuration Guide](CONFIG.md)). If the file does not exist, the first run generates it with the defaults.
 5. Run the backend: `java -jar build/libs/vantage-*-all.jar`
 
 ### Frontend
