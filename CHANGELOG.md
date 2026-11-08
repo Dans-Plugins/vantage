@@ -101,6 +101,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   `token` query parameter on the connection URL. The section now also documents the message format.
 - `CONFIG.md` listed `MYSQL` and `H2` as example `database.dialect` values; the JAR bundles only the
   PostgreSQL driver and the schema uses PostgreSQL column types, so only `POSTGRES` works.
+- Shutting down the backend now delivers `stop` to a running Minecraft server. The shutdown hook
+  wrote the command without flushing the process's buffered input stream, so the server never
+  received it and the backend waited on it indefinitely. `USER_GUIDE.md` no longer tells users to
+  stop the server first.
 
 ## [2.0.1] – 2023-01-01
 
