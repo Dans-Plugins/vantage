@@ -190,6 +190,33 @@ class MinecraftServerTest {
     }
 
     @Test
+    fun `stop delivers the stop command to the running process`() {
+        val server = server("--until-stop")
+        val starter = thread { server.start() }
+        awaitUntil { "Done" in server.consoleLog }
+
+        server.stop()
+        // Without a flush the command sits in the stream's buffer and the server never exits.
+        starter.join(30_000)
+        val exited = !starter.isAlive
+        if (!exited) server.process!!.destroyForcibly()
+
+        assertTrue(exited, "the server did not exit after stop")
+        assertFalse(server.isRunning)
+        awaitUntil { "Stopping server" in server.consoleLog }
+    }
+
+    @Test
+    fun `stop does nothing before the server has started`() {
+        val server = server()
+
+        server.stop()
+
+        assertNull(server.process)
+        assertFalse(server.isRunning)
+    }
+
+    @Test
     fun `sends console sockets a status message on start and on exit, and each line as a log message`() {
         val server = server()
         val socket = FakeWebsocket()

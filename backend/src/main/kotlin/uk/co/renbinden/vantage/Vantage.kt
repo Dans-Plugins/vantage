@@ -109,7 +109,7 @@ fun main() {
     }
     Runtime.getRuntime().addShutdownHook(thread(false) {
         if (minecraftServer.isRunning) {
-            minecraftServer.process?.outputStream?.write("stop\n".toByteArray())
+            minecraftServer.stop()
             minecraftServerThread.join()
         }
     })

@@ -68,4 +68,14 @@ class MinecraftServer(
         logger.info("Minecraft server exited with code ${exitCode}.")
     }
 
+    /**
+     * Sends `stop` to the server's standard input. The process's input stream is buffered, so the
+     * command only reaches the server once it is flushed.
+     */
+    fun stop() {
+        val input = process?.outputStream ?: return
+        input.write("stop\n".toByteArray())
+        input.flush()
+    }
+
 }

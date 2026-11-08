@@ -41,7 +41,7 @@ The navigation bar links to the **Home**, **Console**, **Files**, **Audit**, and
 - Click **Start** to start the server, or **Stop** to stop it. Only the button that applies to the server's current state is shown. **Stop** sends the `stop` command to the server.
 - Type a command in the **Command** field and press Enter or click **Send** to run it on the server.
 - If the server exits straight away and the console stays empty (for example, because the JAR is missing), check the backend's own output: errors the server writes to standard error do not reach the console, and the backend logs `Minecraft server exited with code <n>.`
-- Stop the server before shutting down the backend. The backend waits for the server to exit, and the `stop` it sends on shutdown does not reach the server, so a running server can keep the backend from exiting.
+- Shutting down the backend (for example with Ctrl+C) sends `stop` to a running server and waits for the server to exit before the backend exits.
 
 ### Viewing Audit Logs
 
