@@ -15,7 +15,8 @@ Thank you for your interest in contributing to Vantage! This guide will help you
 - Git installed on your local machine
 - A Java IDE or text editor
 - A basic understanding of Kotlin and/or TypeScript
-- Java 17 or later (for the backend)
+- Java 17 to build the backend (the Gradle wrapper is pinned to Gradle 7.4.2, which does not run on
+  newer JDKs)
 - Node.js 16 or later (for the frontend)
 
 ## Getting Started
@@ -54,8 +55,8 @@ Issues are grouped into [milestones](https://github.com/Dans-Plugins/vantage/mil
 
 The backend is tested with JUnit 5. Tests live under
 `backend/src/test/kotlin/uk/co/renbinden/vantage/`, mirroring the main package structure, in files
-named `<ClassUnderTest>Test.kt`. Most of the backend is still untested, so a green test task is not
-evidence that an untested area works. The Testing section of [README.md](README.md#unit-tests) is
+named `<ClassUnderTest>Test.kt`. The startup logic in `Vantage.kt`'s `main` and the Flyway
+migrations are not tested, so a green test task is not evidence that either works. The Testing section of [README.md](README.md#unit-tests) is
 the single place that lists which classes are covered; update it there when you add tests.
 
 Verify changes with the full build — this is the command CI runs, and it includes the test task:
