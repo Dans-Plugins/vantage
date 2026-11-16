@@ -24,7 +24,7 @@ The backend reads `config.json` once, at startup, so restart it to apply a chang
 
 **Type:** string
 **Default:** `""`
-**Description:** The base URL of the backend API. Used for generating URLs in API responses.
+**Description:** The public root URL the backend is reached at, without `/api/v2` and without a trailing slash (for example `https://panel.example.com` or `http://localhost:9000`). Its only use is as the prefix of the `Location` header returned by `POST /api/v2/user/`, which becomes `<server.baseUrl>/api/v2/user/<id>`; with the default `""`, that header is the root-relative path `/api/v2/user/<id>`. Unlike the frontend's `NEXT_PUBLIC_VANTAGE_API_URL`, it must not include `/api/v2`, or the path is repeated. The panel does not read the header, so this setting does not affect the frontend.
 
 ### server.allowedOrigins
 

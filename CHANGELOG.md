@@ -105,6 +105,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   wrote the command without flushing the process's buffered input stream, so the server never
   received it and the backend waited on it indefinitely. `USER_GUIDE.md` no longer tells users to
   stop the server first.
+- `CONFIG.md` described `server.baseUrl` as "the base URL of the backend API"; it is the backend's
+  root URL without `/api/v2`, used only to build the `Location` header of `POST /api/v2/user/`, so a
+  value copied from `NEXT_PUBLIC_VANTAGE_API_URL` repeated `/api/v2` in that header.
 
 ## [2.0.1] – 2023-01-01
 
