@@ -61,14 +61,20 @@ class FilesHandler(private val baseDirectory: File) {
     fun delete(request: Request): Response {
         val path = request.path("path") ?: "."
         val file = File(baseDirectory, path)
+        if (!file.isInside(baseDirectory) || file.normalizedPath() == baseDirectory.normalizedPath()) {
+            return Response(BAD_REQUEST)
+        }
         file.deleteRecursively()
         return Response(NO_CONTENT)
     }
 
+    // True when this file is the directory itself or anywhere below it, after resolving "." and ".."
+    // segments. Symbolic links are not resolved.
     private fun File.isInside(directory: File): Boolean {
-        if (parentFile == null) return false
-        return parentFile == directory || parentFile.isInside(directory)
+        return normalizedPath().startsWith(directory.normalizedPath())
     }
+
+    private fun File.normalizedPath() = toPath().toAbsolutePath().normalize()
 
     private fun File.toResponse(): FileResponse {
         return FileResponse(

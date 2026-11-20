@@ -12,6 +12,7 @@ import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -114,18 +115,33 @@ class FilesHandlerTest {
     }
 
     @Test
-    fun `get with a dot-dot path currently lists the parent of the base directory`() {
-        // Known defect: isInside compares un-normalized paths, so "minecraft/.." passes the
-        // containment check. A fix should turn this into BAD_REQUEST.
+    fun `get with a dot-dot path that leaves the base directory is rejected`() {
         File(parentDirectory, "outside.txt").writeText("")
 
         val response = app(Request(GET, "/.."))
 
+        assertEquals(BAD_REQUEST, response.status)
+    }
+
+    @Test
+    fun `get with a nested dot-dot path that leaves the base directory is rejected`() {
+        File(baseDirectory, "plugins").mkdir()
+        File(parentDirectory, "outside.txt").writeText("secret")
+
+        val response = app(Request(GET, "/plugins%2F..%2F..%2Foutside.txt"))
+
+        assertEquals(BAD_REQUEST, response.status)
+    }
+
+    @Test
+    fun `get with a dot-dot path that stays inside the base directory is allowed`() {
+        File(baseDirectory, "plugins").mkdir()
+        File(baseDirectory, "eula.txt").writeText("eula=true")
+
+        val response = app(Request(GET, "/plugins%2F..%2Feula.txt"))
+
         assertEquals(OK, response.status)
-        assertEquals(
-            FilesResponse(listOf(FileResponse("minecraft", true), FileResponse("outside.txt", false))),
-            FilesResponse.lens(response)
-        )
+        assertEquals("eula=true", response.bodyString())
     }
 
     @Test
@@ -164,6 +180,14 @@ class FilesHandlerTest {
     }
 
     @Test
+    fun `put with a dot-dot path that leaves the base directory is rejected`() {
+        val response = app(Request(PUT, "/..%2Foutside.txt").body("data"))
+
+        assertEquals(BAD_REQUEST, response.status)
+        assertFalse(File(parentDirectory, "outside.txt").exists())
+    }
+
+    @Test
     fun `put on the root throws rather than returning bad request`() {
         // Current behavior: "minecraft/." passes the containment check, then writing bytes to a
         // directory fails.
@@ -199,16 +223,34 @@ class FilesHandlerTest {
     }
 
     @Test
-    fun `delete with a dot-dot path currently removes the base directory itself`() {
-        // Known defect: delete performs no containment check at all, unlike get and put, so
-        // "minecraft/.." walks the parent directory. A fix should turn this into BAD_REQUEST and
-        // leave the base directory in place.
+    fun `delete with a dot-dot path that leaves the base directory is rejected`() {
         File(baseDirectory, "world").mkdir()
         File(baseDirectory, "world/level.dat").writeText("")
 
         val response = app(Request(DELETE, "/.."))
 
-        assertEquals(NO_CONTENT, response.status)
-        assertFalse(baseDirectory.exists())
+        assertEquals(BAD_REQUEST, response.status)
+        assertTrue(File(baseDirectory, "world/level.dat").exists())
+    }
+
+    @Test
+    fun `delete with a nested dot-dot path keeps the file outside the base directory`() {
+        File(baseDirectory, "plugins").mkdir()
+        val outside = File(parentDirectory, "outside.txt").apply { writeText("") }
+
+        val response = app(Request(DELETE, "/plugins%2F..%2F..%2Foutside.txt"))
+
+        assertEquals(BAD_REQUEST, response.status)
+        assertTrue(outside.exists())
+    }
+
+    @Test
+    fun `delete of the base directory itself is rejected`() {
+        File(baseDirectory, "eula.txt").writeText("")
+
+        val response = app(Request(DELETE, "/."))
+
+        assertEquals(BAD_REQUEST, response.status)
+        assertTrue(File(baseDirectory, "eula.txt").exists())
     }
 }
