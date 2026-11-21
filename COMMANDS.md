@@ -69,9 +69,10 @@ A `POST /api/v2/login`, `POST /api/v2/user/`, or `PATCH /api/v2/user/{id}` whose
 single path segment: address a nested path by encoding each `/` as `%2F`, for example
 `/api/v2/files/plugins%2Fconfig.yml`. File operations are not recorded in the audit log.
 
-The containment check that `GET` and `PUT` apply does not normalize `..`, so a `{path}` containing
-`..` can resolve outside `minecraft.directory`; for example, `GET` with a `{path}` of `..` lists its
-parent. `DELETE` applies no containment check at all.
+`.` and `..` segments in `{path}` are resolved before the request is handled. A `{path}` that
+resolves outside `minecraft.directory` returns `400 Bad Request`; one that stays inside it, such as
+`plugins%2F..%2Feula.txt`, is allowed. Symbolic links are not resolved, so a link inside
+`minecraft.directory` is followed wherever it points.
 
 ### GET /api/v2/files/\[{path}\]
 
@@ -97,7 +98,8 @@ error.
 **Description:** Delete a file at the given path.
 **Authentication:** Required.
 **Response:** `204 No Content`. A directory is deleted together with everything in it. A path that
-does not exist also returns `204 No Content`.
+does not exist also returns `204 No Content`. A `{path}` that resolves to `minecraft.directory`
+itself, such as `.`, returns `400 Bad Request` and deletes nothing.
 
 ## Brand Endpoint
 

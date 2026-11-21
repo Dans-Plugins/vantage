@@ -108,6 +108,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `CONFIG.md` described `server.baseUrl` as "the base URL of the backend API"; it is the backend's
   root URL without `/api/v2`, used only to build the `Location` header of `POST /api/v2/user/`, so a
   value copied from `NEXT_PUBLIC_VANTAGE_API_URL` repeated `/api/v2` in that header.
+- The file endpoints now resolve `.` and `..` in `{path}` before checking that it stays inside
+  `minecraft.directory`, and return `400 Bad Request` when it does not. `GET` and `PUT` compared
+  un-resolved paths, so `..` could read or write outside the directory, and `DELETE` had no check
+  at all, so `DELETE /api/v2/files/..` deleted the directory's parent. `DELETE` also refuses to
+  delete `minecraft.directory` itself.
 
 ## [2.0.1] – 2023-01-01
 
