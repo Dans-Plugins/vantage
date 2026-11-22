@@ -1,0 +1,172 @@
+{
+  "out": ".",
+  "vars": {
+    "base": "http://localhost:3217",
+    "username": "admin",
+    "password": ""
+  },
+  "defaults": {
+    "device": "desktop",
+    "timeout": 1500,
+    "readyTimeout": 600000,
+    "screenshotTimeout": 600000,
+    "url": "{base}/api/auth/signin",
+    "ready": "document.readyState === 'complete'",
+    "setup": [
+      {
+        "waitFor": "document.querySelector('input[name=password]')",
+        "timeout": 600000
+      },
+      {
+        "js": "document.querySelector('input[name=username]').value = vars.username; document.querySelector('input[name=password]').value = vars.password;"
+      },
+      {
+        "click": "form[action$='/callback/credentials'] button"
+      },
+      {
+        "waitFor": "!location.pathname.startsWith('/api/auth')",
+        "timeout": 600000
+      }
+    ]
+  },
+  "shots": [
+    {
+      "name": "console",
+      "kind": "still",
+      "steps": [
+        {
+          "goto": "{base}/console"
+        },
+        {
+          "waitFor": "document.querySelectorAll('input').length > 0 && document.body.innerText.includes('Done (')",
+          "timeout": 600000
+        },
+        {
+          "click": "input"
+        },
+        {
+          "type": "list"
+        },
+        {
+          "key": "Enter"
+        },
+        {
+          "wait": 1500
+        },
+        {
+          "type": "say Welcome to the demo server"
+        },
+        {
+          "key": "Enter"
+        },
+        {
+          "waitFor": "document.body.innerText.includes('[Server] Welcome')",
+          "timeout": 120000
+        },
+        {
+          "wait": 500
+        }
+      ],
+      "caption": "Console page: live server output over WebSocket, with Stop and a command box.",
+      "alt": "Vantage console page showing streamed server log lines, a Stop button and a command input"
+    },
+    {
+      "name": "files",
+      "kind": "still",
+      "steps": [
+        {
+          "goto": "{base}/files"
+        },
+        {
+          "waitFor": "document.body.innerText.includes('server.properties')",
+          "timeout": 600000
+        },
+        {
+          "wait": 500
+        }
+      ],
+      "caption": "Files page: browse, upload, download and delete files in the server directory.",
+      "alt": "Vantage file browser listing folders and files of the Minecraft server directory with delete icons"
+    },
+    {
+      "name": "users",
+      "kind": "still",
+      "steps": [
+        {
+          "goto": "{base}/users"
+        },
+        {
+          "waitFor": "document.body.innerText.includes('builder_sam')",
+          "timeout": 600000
+        },
+        {
+          "wait": 500
+        }
+      ],
+      "caption": "Users page: panel accounts with their status, plus Create and Edit.",
+      "alt": "Vantage users table with ID, username, active or inactive status chips and Edit buttons"
+    },
+    {
+      "name": "audit",
+      "kind": "still",
+      "steps": [
+        {
+          "goto": "{base}/audit"
+        },
+        {
+          "waitFor": "document.body.innerText.includes('Executed command')",
+          "timeout": 600000
+        },
+        {
+          "wait": 500
+        }
+      ],
+      "caption": "Audit page: a paginated history of logins, user changes and console commands.",
+      "alt": "Vantage audit log table listing user, description and time for each panel action"
+    },
+    {
+      "name": "phone-console",
+      "kind": "still",
+      "device": "phone",
+      "steps": [
+        {
+          "goto": "{base}/console"
+        },
+        {
+          "waitFor": "document.body.innerText.includes('Done (')",
+          "timeout": 600000
+        },
+        {
+          "wait": 500
+        }
+      ],
+      "caption": "Console on a phone (390x844).",
+      "alt": "Vantage console page at phone width with the menu button in the app bar"
+    },
+    {
+      "name": "phone-menu",
+      "kind": "still",
+      "device": "phone",
+      "steps": [
+        {
+          "goto": "{base}/users"
+        },
+        {
+          "waitFor": "document.body.innerText.includes('builder_sam')",
+          "timeout": 600000
+        },
+        {
+          "tap": "button[aria-controls=menu-appbar]"
+        },
+        {
+          "waitFor": "document.querySelector('#menu-appbar .MuiMenuItem-root')"
+        },
+        {
+          "wait": 600
+        }
+      ],
+      "caption": "Navigation menu at phone width.",
+      "alt": "Vantage at phone width with the navigation menu open listing Home, Console, Files, Audit and Users"
+    }
+  ]
+}
