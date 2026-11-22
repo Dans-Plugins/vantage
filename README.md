@@ -4,6 +4,21 @@
 
 Vantage is a web-based management panel for Minecraft servers. It provides a modern dashboard for server administration, including user management, file browsing, live console access via WebSocket, audit logging, and server monitoring. The project consists of a Kotlin backend (HTTP4K + Jetty) and a Next.js (TypeScript) frontend.
 
+![Vantage console page showing streamed server log lines, a Stop button and a command input](docs/screenshots/console.jpg)
+
+## Screenshots
+
+| | |
+|---|---|
+| ![Vantage file browser listing folders and files of the Minecraft server directory with delete icons](docs/screenshots/files.jpg) | ![Vantage users table with ID, username, active or inactive status chips and Edit buttons](docs/screenshots/users.jpg) |
+| **Files**: browse, upload, download and delete files in the server directory. | **Users**: panel accounts with their status, plus Create and Edit. |
+| ![Vantage audit log table listing user, description and time for each panel action](docs/screenshots/audit.jpg) | <img src="docs/screenshots/phone-console.jpg" width="180" alt="Vantage console page at phone width with the menu button in the app bar"> <img src="docs/screenshots/phone-menu.jpg" width="180" alt="Vantage at phone width with the navigation menu open listing Home, Console, Files, Audit and Users"> |
+| **Audit**: a paginated history of logins, user changes and console commands. | **Phone** (390x844): the console, and the navigation menu that replaces the top bar on narrow screens. At this width the users table is wider than the screen, so its Actions column is cut off. |
+
+The screenshots were taken from the real frontend and backend running locally against a demo PostgreSQL database with demo accounts. The Minecraft server process was a small stand-in script (its output says so), not a real Minecraft server, so the console lines are illustrative of the format only.
+
+Regenerating screenshots: with the backend and `npm run dev` running, `darkroom shoot docs/screenshots/media.json --var password=<admin password> --force` ([darkroom](https://github.com/Preponderous-Software/darkroom)); edit `base` in the shot list if the frontend is not on port 3217.
+
 ## Installation
 
 ### Prerequisites

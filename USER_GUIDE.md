@@ -23,11 +23,15 @@ The navigation bar links to the **Home**, **Console**, **Files**, **Audit**, and
 
 ### Managing Users
 
+![Users page listing panel accounts with active and inactive status chips and Edit buttons](docs/screenshots/users.jpg)
+
 - Navigate to the **Users** page to view panel users, with their ID, username, and status.
 - Click **Create** to add a new user. Enter a username and password, then click **Save**.
 - Click **Edit** in a user's row to change their username, password, or status (Active or Inactive), then click **Save**. Leave the password field empty to keep the current password.
 
 ### Browsing Server Files
+
+![Files page listing the folders and files of the server directory, each with a delete icon](docs/screenshots/files.jpg)
 
 - Navigate to the **Files** page to browse the Minecraft server directory. Click a folder to open it, or **..** to go back up.
 - Click a file to download it.
@@ -35,6 +39,8 @@ The navigation bar links to the **Home**, **Console**, **Files**, **Audit**, and
 - Click the delete icon next to a file or folder to delete it. There is no confirmation, and deleting a folder also deletes everything inside it.
 
 ### Viewing the Server Console
+
+![Console page streaming server output, with the Stop button and the Command field](docs/screenshots/console.jpg)
 
 - Navigate to the **Console** page for a live view of the Minecraft server console via WebSocket.
 - The Minecraft server starts with the backend, so it is normally already running when you open this page.
@@ -44,6 +50,8 @@ The navigation bar links to the **Home**, **Console**, **Files**, **Audit**, and
 - Shutting down the backend (for example with Ctrl+C) sends `stop` to a running server and waits for the server to exit before the backend exits.
 
 ### Viewing Audit Logs
+
+![Audit page listing the user, description and time of each recorded action](docs/screenshots/audit.jpg)
 
 - Navigate to the **Audit** page to see a paginated history of actions performed by panel users, showing the user, a description, and the time of each action. Logins, user changes, console commands, and server starts from the panel are recorded. File uploads and deletes are not, and neither is the server start that happens with the backend.
 
